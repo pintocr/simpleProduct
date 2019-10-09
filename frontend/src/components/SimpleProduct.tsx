@@ -1,9 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
+import {IProduct} from '../App';
 
-export default class SimpleProduct extends Component {
+interface IProps {
+    edit: boolean;
+    onDelete: Function;
+    isLoggedIn: boolean;
+    product: IProduct;
+}
 
-    constructor(props) {
+interface IState {
+    delete_function: any;
+    edit_mode: boolean;
+    product: IProduct;
+}
+
+export default class SimpleProduct extends React.PureComponent<IProps, IState> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.handleEdit = this.handleEdit.bind(this);
@@ -31,7 +45,11 @@ export default class SimpleProduct extends Component {
                     <td><input type="number" name="value" value={this.state.product.product_value} onChange={this.handleValueChange} /> €</td>
                     <td><input type="number" name="value" value={this.state.product.product_amount} onChange={this.handleAmountChange} /></td>
                     <td>{this.state.product.product_totalPrice}</td>
-                    <td> <button onClick={this.handleSave} id={this.state.product._id}>save</button></td>
+                    <td> 
+                        <button disabled= {!this.props.isLoggedIn} onClick={this.handleAmountIncrease}>+ Amount</button>
+                        <button disabled= {!this.props.isLoggedIn} onClick={this.handleAmountDecrease}>- Amount</button>
+                        <button onClick={this.handleSave} id={this.state.product._id}>save</button>
+                    </td>
                 </tr>
             )
         else
@@ -41,10 +59,8 @@ export default class SimpleProduct extends Component {
                     <td>{this.state.product.product_name}</td>
                     <td>{this.state.product.product_value} €</td>
                     <td>{this.state.product.product_amount}</td>
-                    <td>{this.state.product.product_totalPrice}</td>
+                    <td>{this.state.product.product_totalPrice} €</td>
                     <td>
-                        <button disabled= {!this.props.isLoggedIn} onClick={this.handleAmountIncrease}>+ Amount</button>
-                        <button disabled= {!this.props.isLoggedIn} onClick={this.handleAmountDecrease}>- Amount</button>
                         <button disabled= {!this.props.isLoggedIn} onClick={this.handleEdit}>edit</button>
                         <button disabled= {!this.props.isLoggedIn} onClick={this.state.delete_function} id={this.state.product._id}>sell or dispose</button>
                     </td>
@@ -52,18 +68,19 @@ export default class SimpleProduct extends Component {
             )
     }
 
-    handleNameChange(event) {
+    handleNameChange(event: any) {
         this.setState({
             product: {
                 _id: this.state.product._id,
                 product_name: event.target.value,
                 product_value: this.state.product.product_value,
-                product_amount: this.state.product.product_amount
+                product_amount: this.state.product.product_amount,
+                product_totalPrice: this.state.product.product_value * this.state.product.product_amount
             }
         });
     }
 
-    handleValueChange(event) {
+    handleValueChange(event: any) {
         this.setState({
             product: {
                 _id: this.state.product._id,
@@ -75,7 +92,7 @@ export default class SimpleProduct extends Component {
         });
     }
 
-    handleAmountChange(event) {
+    handleAmountChange(event: any) {
         this.setState({
             product: {
                 _id: this.state.product._id,
@@ -106,12 +123,12 @@ export default class SimpleProduct extends Component {
                 product_name: this.state.product.product_name,
                 product_value: this.state.product.product_value,
                 product_amount: this.state.product.product_amount - 1,
-                product_totalPrice: (this.state.product.product_amount + 1) * this.state.product.product_value
+                product_totalPrice: (this.state.product.product_amount - 1) * this.state.product.product_value
             }
         });
     }
 
-    handleSave(event) {
+    handleSave(event: any) {
         const IdOfProductToDelete = event.target.id;
   
         axios.post('http://localhost:8080/update/' + IdOfProductToDelete, this.state.product)

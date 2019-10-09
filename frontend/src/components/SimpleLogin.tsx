@@ -1,8 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export default class SimpleLogin extends Component {
+interface IProps {
+    isLoggedIn: boolean;
+    handleLogin: Function;
+    handleLogout: Function;
+}
 
-    constructor(props) {
+interface IState {
+    username: string;
+    password: string;
+}
+
+export default class SimpleLogin extends React.PureComponent<IProps, IState>  {
+
+    constructor(props: IProps) {
         super(props);
         this.handleLogin = this.handleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
@@ -48,13 +59,13 @@ export default class SimpleLogin extends Component {
         this.props.handleLogout();
     }
 
-    handleChangeUser(event){
+    handleChangeUser(event: any){
         this.setState({
             username: event.target.value
         })
     }
 
-    handleChangePass(event){
+    handleChangePass(event: any){
         this.setState({
             password: event.target.value
         })

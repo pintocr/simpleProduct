@@ -65,6 +65,7 @@ productRoutes.route('/update/:id').post(function (req, res) {
             product.product_name = req.body.product_name;
             product.product_value = req.body.product_value;
             product.product_amount = req.body.product_amount;
+            product.product_totalPrice = req.body.product_totalPrice;
 
             product.save().then(product => {
                 res.json('product updated!');
@@ -91,7 +92,7 @@ productRoutes.route('/login').post(function (req, res) {
        if(req.body.password == response.user_password){
            res.status(200).send("valid password");
        } else {
-        res.status(403).send("not a valid password");
+        res.status(418).send("not a valid password");
        }
     })
     .catch(err => console.log(err));
