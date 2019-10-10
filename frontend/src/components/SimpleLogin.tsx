@@ -40,7 +40,7 @@ export default class SimpleLogin extends React.PureComponent<IProps, IState>  {
         } else {
             return (
                 <div>
-                <p>Logout of your account: &nbsp;
+                <p>Welcome back {this.state.username} &nbsp;
                 <button onClick={this.handleLogout}>log out</button>
                 </p>
                 </div>

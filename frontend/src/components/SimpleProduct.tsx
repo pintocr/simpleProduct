@@ -7,6 +7,7 @@ interface IProps {
     onDelete: Function;
     isLoggedIn: boolean;
     product: IProduct;
+    handleAmount: Function;
 }
 
 interface IState {
@@ -40,14 +41,14 @@ export default class SimpleProduct extends React.PureComponent<IProps, IState> {
         //if the component is in edit mode, it will render different than if it just shows the data
         if (this.state.edit_mode)
             return (
-                <tr>
+                <tr className="prod">
                     <td><input type="text" name="name" value={this.state.product.product_name} onChange={this.handleNameChange} /></td>
                     <td><input type="number" name="value" value={this.state.product.product_value} onChange={this.handleValueChange} /> €</td>
                     <td><input type="number" name="value" value={this.state.product.product_amount} onChange={this.handleAmountChange} /></td>
                     <td>{this.state.product.product_totalPrice}</td>
                     <td> 
-                        <button disabled= {!this.props.isLoggedIn} onClick={this.handleAmountIncrease}>+ Amount</button>
-                        <button disabled= {!this.props.isLoggedIn} onClick={this.handleAmountDecrease}>- Amount</button>
+                        <button disabled= {!this.props.isLoggedIn} onClick={this.handleAmountIncrease}>+ Amount</button>&nbsp;
+                        <button disabled= {!this.props.isLoggedIn} onClick={this.handleAmountDecrease}>- Amount</button>&nbsp;
                         <button onClick={this.handleSave} id={this.state.product._id}>save</button>
                     </td>
                 </tr>
@@ -55,13 +56,13 @@ export default class SimpleProduct extends React.PureComponent<IProps, IState> {
         else
             return (
                
-                <tr>
+                <tr className="prod">
                     <td>{this.state.product.product_name}</td>
                     <td>{this.state.product.product_value} €</td>
                     <td>{this.state.product.product_amount}</td>
                     <td>{this.state.product.product_totalPrice} €</td>
                     <td>
-                        <button disabled= {!this.props.isLoggedIn} onClick={this.handleEdit}>edit</button>
+                        <button disabled= {!this.props.isLoggedIn} onClick={this.handleEdit}>edit</button>&nbsp;
                         <button disabled= {!this.props.isLoggedIn} onClick={this.state.delete_function} id={this.state.product._id}>sell or dispose</button>
                     </td>
                 </tr>
@@ -132,7 +133,10 @@ export default class SimpleProduct extends React.PureComponent<IProps, IState> {
         const IdOfProductToDelete = event.target.id;
   
         axios.post('http://localhost:8080/update/' + IdOfProductToDelete, this.state.product)
-            .then(res => console.log(res.data));
+            .then(res => {
+                console.log(res.data);
+                this.props.handleAmount();
+            });
 
         this.setState({ edit_mode: false });
     }

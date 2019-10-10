@@ -98,6 +98,21 @@ productRoutes.route('/login').post(function (req, res) {
     .catch(err => console.log(err));
 });
 
+productRoutes.route('/sum').post(function (req, res) {
+    let prod_amount = 0;
+    let price_amount = 0;
+    Product.find({}).then(response => {
+        response.forEach(element => {
+           prod_amount = prod_amount + element.product_amount;
+           price_amount = price_amount + element.product_totalPrice;
+        });
+        res.send(JSON.stringify({
+            "prod_amount": prod_amount,
+            "price_amount" : price_amount
+    })) ;
+    })
+});
+
 
 app.use('/', productRoutes);
 

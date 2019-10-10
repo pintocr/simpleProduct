@@ -5,20 +5,52 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-weight: bold;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+h1{
+  color: rgb(20, 47, 105);
+}
+
 table {
   border-collapse: collapse;
 }
 
 table, th, td {
-  border: 1px solid black;
+  border: 2px solid black;
 }
 
 th{
   width:250px;
+}
+
+button{
+  background-color:  rgb(20, 47, 105);
+  color: white;
+  border-color:  rgb(20, 47, 105);
+}
+
+button:disabled{
+  background-color:  rgb(255, 255, 255);
+  color: rgb(177, 177, 177);
+  border-color:  rgb(255, 255, 255);
+}
+
+.sum {
+  font-weight: bold;
+  background-color: rgb(192, 209, 247);
+}
+
+.prod {
+  color: rgb(20, 47, 105);
+  font-weight: bold;
+}
+
+.header {
+  background-color: rgb(192, 209, 247);
 }
